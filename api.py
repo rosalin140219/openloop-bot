@@ -53,7 +53,7 @@ class OpenLoop(object):
                             logger.error(f"Account {self.email} registered failed, status code: {response.status}, "
                                          f"response: {response.text}")
             except Exception as e:
-                logger.error(f"{self.email} register exception,{e}")
+                logger.error(f"{self.email} register exception,{str(e)}")
             logger.info(f"Retrying registering for account {self.email} ({attempt + 1}/{max_retries})")
             time.sleep(2)
         logger.error(f"Account {self.email} register failed after {max_retries} attempts")
@@ -85,7 +85,7 @@ class OpenLoop(object):
                         else:
                             logger.error(f"Account {self.email} login failed, status code: {response.status}")
             except Exception as e:
-                logger.error(f"Account {self.email} login failed, exception: {e}")
+                logger.error(f"Account {self.email} login failed, exception: {str(e)}")
 
             logger.info(f"Retrying login for account {self.email} ({attempt + 1}/{max_retries})")
             time.sleep(2)
@@ -111,7 +111,7 @@ class OpenLoop(object):
                         logger.error(f"Account {self.email} get profile failed, status code: {response.status}")
                         return None
         except Exception as e:
-            logger.error(f"Account {self.email} get profile failed, exception: {e}")
+            logger.error(f"Account {self.email} get profile failed, exception: {str(e)}")
             return None
 
     async def connect_wallet(self, private_key, token):
@@ -146,7 +146,7 @@ class OpenLoop(object):
                         return False
             return False
         except Exception as e:
-            logger.error(f"Account:{self.email} connect wallet failed, exception: {e}")
+            logger.error(f"Account:{self.email} connect wallet failed, exception: {str(e)}")
             return False
 
     async def query_available_tasks(self, token):
@@ -168,7 +168,7 @@ class OpenLoop(object):
                         logger.error(f"Account {self.email} query available tasks failed, status code: {response.status}")
                         return None
         except Exception as e:
-            logger.error(f"Account {self.email} query available tasks failed, exception: {e}")
+            logger.error(f"Account {self.email} query available tasks failed, exception: {str(e)}")
             return None
 
     async def complete(self, access_token, mission_id):
@@ -192,7 +192,7 @@ class OpenLoop(object):
                         else:
                             logger.info(f"Account:{self.email} complete mission {mission_id} failed")
             except Exception as e:
-                logger.info(f"Account:{self.email} complete mission {mission_id} exception: {e}")
+                logger.info(f"Account:{self.email} complete mission {mission_id} exception: {str(e)}")
             logger.info(f"Retrying complete mission {mission_id} for account {self.email} ({attempt + 1}/{max_retries})")
             time.sleep(1)
         logger.error(f"Account:{self.email} complete mission {mission_id} failed after {max_retries} attempts")
@@ -225,5 +225,5 @@ class OpenLoop(object):
                         logger.error(f"Account:{self.email} share bandwidth info failed, status code: "
                                      f"{response.status}, response: {data}")
         except Exception as e:
-            logger.error(f"Account:{self.email} share bandwidth info exception: {e}")
+            logger.error(f"Account:{self.email} share bandwidth info exception: {str(e)}")
         return False
