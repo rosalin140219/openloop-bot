@@ -67,5 +67,6 @@ async def run_farm(batch_size=10):
         for offset in range(0, total_account, batch_size):
             accounts = await fetch_farm_accounts(limit=batch_size, offset=offset)
             await run_batch(accounts)
-
-        await asyncio.sleep(30)
+        end_time = time.time()  # 获取结束时间
+        logger.info(f"一次任务执行的时间: {end_time - start_time}")
+        # await asyncio.sleep(30)
