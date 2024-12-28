@@ -20,7 +20,7 @@ async def execute_task(target_task, token, client):
         update_task_executed_time(client.email, datetime.now())
     elif task_name == 'run_complete_task':
         if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
-                minutes=3):
+                hours=24):
             logger.warning(f"Skipping task {task_name} for account {client.email}")
             return
         await complete_task(token, client)
