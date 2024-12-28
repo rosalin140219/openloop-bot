@@ -11,21 +11,27 @@ from init import update_token, fetch_tasks, update_task_executed_time, complete_
 async def execute_task(target_task, token, client):
     id, task_name, last_executed = target_task
     if task_name == 'run_share_task':
-        if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
-                minutes=3):
-            logger.warning(f"Skipping task {task_name} for account {client.email}")
-            return
-        await share_bandwidth_info(token, client)
-        # 更新任务时间
-        update_task_executed_time(client.email, datetime.now())
+        try:
+            if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
+                    minutes=3):
+                logger.warning(f"Skipping task {task_name} for account {client.email}")
+                return
+            await share_bandwidth_info(token, client)
+            # 更新任务时间
+            update_task_executed_time(client.email, datetime.now())
+        except Exception as e:
+            logger.error(f"Account:{client.email} run share task exception,{str(e)}")
     elif task_name == 'run_complete_task':
-        if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
-                hours=24):
-            logger.warning(f"Skipping task {task_name} for account {client.email}")
-            return
-        await complete_task(token, client)
-        # 更新任务时间
-        update_task_executed_time(client.email, datetime.now())
+        try:
+            if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
+                    hours=24):
+                logger.warning(f"Skipping task {task_name} for account {client.email}")
+                return
+            await complete_task(token, client)
+            # 更新任务时间
+            update_task_executed_time(client.email, datetime.now())
+        except Exception as e:
+            logger.error(f"Account:{client.email} complete task exception,{str(e)}")
 
 
 async def share_bandwidth_info(token, client):
