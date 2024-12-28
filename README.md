@@ -6,7 +6,7 @@ pip install -r requirements.txt
 ```
 3. 配置
 accounts.txt格式如下：
-邮箱:邀请码
+邮箱:邀请码 </br>
 proxies.txt格式如下：
 http://username:password@ip:port
 4. 注册时，使用统一密码，方便后续登录，具体配置在config.py中，可自行修改

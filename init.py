@@ -2,6 +2,7 @@ import asyncio
 import sqlite3
 import sys
 import time
+from datetime import datetime
 
 import aiosqlite
 from loguru import logger
@@ -144,11 +145,25 @@ def insert_task(email, tasks):
         conn.close()
 
 
-async def fetch_tasks(self, email):
-    async with aiosqlite.connect(self.db_path) as db:
+async def fetch_tasks(email):
+    async with aiosqlite.connect('openloop.db') as db:
         async with db.execute('SELECT id, task_name, last_executed FROM task WHERE email = ?', (email,)) as cursor:
             tasks = await cursor.fetchall()
     return tasks
+
+
+def update_task_executed_time(email, now):
+    conn = sqlite3.connect('openloop.db')
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            UPDATE task SET last_executed = ? WHERE email = ?
+            ''', (now, email))
+        conn.commit()
+    finally:
+        # 关闭游标和连接
+        cursor.close()
+        conn.close()
 
 
 def init():
