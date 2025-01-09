@@ -6,14 +6,15 @@ import aiosqlite
 from api import OpenLoop
 from loguru import logger
 from init import update_token, fetch_tasks, update_task_executed_time, complete_task
+from dateutil import format_date_with_microseconds
 
 
 async def execute_task(target_task, token, client):
     id, task_name, last_executed = target_task
     if task_name == 'run_share_task':
         try:
-            if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
-                    minutes=3):
+            if last_executed and datetime.now() - datetime.strptime(format_date_with_microseconds(last_executed),
+                                                                    '%Y-%m-%d %H:%M:%S.%f') < timedelta(minutes=3):
                 logger.warning(f"Skipping task {task_name} for account {client.email}")
                 return
             await share_bandwidth_info(token, client)
@@ -23,8 +24,8 @@ async def execute_task(target_task, token, client):
             logger.error(f"Account:{client.email} run share task exception,{str(e)}")
     elif task_name == 'run_complete_task':
         try:
-            if last_executed and datetime.now() - datetime.strptime(last_executed, '%Y-%m-%d %H:%M:%S.%f') < timedelta(
-                    hours=24):
+            if last_executed and datetime.now() - datetime.strptime(format_date_with_microseconds(last_executed),
+                                                                    '%Y-%m-%d %H:%M:%S.%f') < timedelta(hours=24):
                 logger.warning(f"Skipping task {task_name} for account {client.email}")
                 return
             await complete_task(token, client)

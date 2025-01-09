@@ -2,7 +2,6 @@ import asyncio
 import sqlite3
 import sys
 import time
-from datetime import datetime
 
 import aiosqlite
 from loguru import logger
