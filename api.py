@@ -214,9 +214,10 @@ class OpenLoop(object):
                         code = json.loads(data).get('code')
                         if code == 2000:
                             points = json.loads(data).get('data').get('balances').get('POINT')
+                            today_earning = await self.get_today_earning(token)
                             logger.info(
                                 f"Account:{self.email} share bandwidth info successfully, current points:{points}, "
-                                f"today earning: {self.get_today_earning(token)}")
+                                f"today earning: {today_earning}")
                             return True
                         else:
                             data = await response.text()
