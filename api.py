@@ -215,11 +215,12 @@ class OpenLoop(object):
                         if code == 2000:
                             points = json.loads(data).get('data').get('balances').get('POINT')
                             logger.info(
-                                f"Account:{self.email} share bandwidth info successfully, current points:{points}")
+                                f"Account:{self.email} share bandwidth info successfully, current points:{points}, "
+                                f"today earning: {self.get_today_earning(token)}")
                             return True
                         else:
                             data = await response.text()
-                            logger.error(f"Account:{self.email} share bandwidth info failed， resposne: {data}")
+                            logger.error(f"Account:{self.email} share bandwidth info failed， response: {data}")
                     else:
                         data = await response.text()
                         logger.error(f"Account:{self.email} share bandwidth info failed, status code: "
@@ -227,3 +228,25 @@ class OpenLoop(object):
         except Exception as e:
             logger.error(f"Account:{self.email} share bandwidth info exception: {str(e)}")
         return False
+
+    async def get_today_earning(self, token):
+        try:
+            headers = {
+                'Authorization': f'Bearer {token}'
+            }
+            async with aiohttp.ClientSession() as session:
+                async with session.get(self.bandwidth_info_url, headers=headers, proxy=self.proxy, timeout=timeout) as response:
+                    if response.status == 200:
+                        data = await response.text()
+                        code = json.loads(data).get('code')
+                        if code == 2000:
+                            return json.loads(data).get('data').get('todayEarning')
+                        else:
+                            logger.error(f"Account {self.email} get bandwidth info failed")
+                            return 0
+                    else:
+                        logger.error(f"Account {self.email} get bandwidth info failed, status code: {response.status}")
+                        return 0
+        except Exception as e:
+            logger.error(f"Account {self.email} get bandwidth info failed, exception: {str(e)}")
+            return 0
