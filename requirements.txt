@@ -5,6 +5,7 @@ aiosqlite==0.20.0
 anyio==4.7.0
 attrs==24.3.0
 certifi==2024.12.14
+charset-normalizer==3.4.1
 construct==2.10.68
 construct-typing==0.5.6
 frozenlist==1.5.0
@@ -16,9 +17,13 @@ jsonalias==0.1.1
 loguru==0.7.3
 multidict==6.1.0
 propcache==0.2.1
+python-dateutil==2.9.0.post0
+requests==2.32.3
+six==1.17.0
 sniffio==1.3.1
 solana==0.35.0
 solders==0.21.0
 typing_extensions==4.12.2
+urllib3==2.3.0
 websockets==11.0.3
 yarl==1.18.3
