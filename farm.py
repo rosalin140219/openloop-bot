@@ -76,4 +76,4 @@ async def run_farm(batch_size=10):
             await run_batch(accounts)
         end_time = time.time()  # 获取结束时间
         logger.info(f"一次任务执行的时间: {end_time - start_time}")
-        await asyncio.sleep(100)
+        await asyncio.sleep(30)
