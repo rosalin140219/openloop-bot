@@ -71,8 +71,7 @@ class OpenLoop(object):
                     'Content-Type': 'application/json'
                 }
                 async with aiohttp.ClientSession() as session:
-                    async with session.post(self.login_url, headers=headers, data=payload, proxy=self.proxy,
-                                            timeout=timeout) as response:
+                    async with session.post(self.login_url, headers=headers, data=payload) as response:
                         if response.status == 200:
                             data = await response.text()
                             code = json.loads(data).get('code')

@@ -58,7 +58,7 @@ async def run_batch(accounts):
 
 async def fetch_farm_accounts(limit=10, offset=0):
     async with aiosqlite.connect("openloop.db") as db:
-        async with db.execute('SELECT email, password, proxy, token FROM accounts where registered = TRUE order by id asc LIMIT ? OFFSET ? ', (limit, offset)) as cursor:
+        async with db.execute('SELECT email, password, proxy, token FROM accounts order by id asc LIMIT ? OFFSET ? ', (limit, offset)) as cursor:
             accounts = await cursor.fetchall()
     return accounts
 
@@ -76,4 +76,4 @@ async def run_farm(batch_size=10):
             await run_batch(accounts)
         end_time = time.time()  # 获取结束时间
         logger.info(f"一次任务执行的时间: {end_time - start_time}")
-        # await asyncio.sleep(30)
+        await asyncio.sleep(100)
